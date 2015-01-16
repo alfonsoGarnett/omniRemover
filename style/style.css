@@ -29,7 +29,6 @@ a:hover
 }
 #menu > div, a, button
 {
-    display: block;
     transition: 600ms all;
     flex: 1;
     background: #002b36;
