@@ -26,11 +26,13 @@ a:hover
     height: 200px;
     transition: 600ms all;
     background: #002b36;
-    border-radius: 50%;
-    padding: 30px;
+    border-radius: 5px;
+    float: left;
+    padding: 8px;
     text-align: center;
     font-size: 110%;
     box-shadow: 0 0 1px #e2edf1;
+    background: #f3f3f3;
 }
 .diva:hover
 {
