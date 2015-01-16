@@ -15,6 +15,7 @@ a
     text-decoration: none;
     outline: none;
     display: block;
+    height: 100%;
 }
 a:hover
 {
