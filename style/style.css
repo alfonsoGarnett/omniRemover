@@ -27,7 +27,8 @@ a:hover
     transition: 600ms all;
     background: #002b36;
     border-radius: 50%;
-    text-align:center;
+    padding: 30px;
+    text-align: center;
     font-size: 110%;
     box-shadow: 0 0 1px #e2edf1;
 }
