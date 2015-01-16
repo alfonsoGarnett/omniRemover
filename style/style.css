@@ -22,9 +22,10 @@ a:hover
 }
 #container
 {
-    position: absolute;
+    position: relative;
     width: 50%;
     margin: 0 auto;
+    border: 1px solid dashed;
 }
 .diva
 {
