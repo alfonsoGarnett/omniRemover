@@ -22,6 +22,8 @@ a:hover
 }
 .diva
 {
+    width: 25%;
+    height: 25%;
     transition: 600ms all;
     background: #002b36;
     border-radius: 50%;
