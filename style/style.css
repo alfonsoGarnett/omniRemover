@@ -22,12 +22,13 @@ a:hover
 }
 .diva
 {
-    width: 25%;
+    width: 200px;
+    height: 200px;
     transition: 600ms all;
     background: #002b36;
     border-radius: 50%;
     text-align:center;
-    font-size: 4vmax;
+    font-size: 2.5vmax;
     box-shadow: 0 0 1px #e2edf1;
 }
 .diva:hover
