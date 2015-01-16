@@ -37,7 +37,8 @@ a:hover
     padding: 8px;
     text-align: center;
     font-size: 110%;
-    background: lightblue;
+    background: #0f7791;
+    margin: 10px;
 }
 .diva:hover
 {
