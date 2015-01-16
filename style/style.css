@@ -8,6 +8,7 @@ body, html
     font-family: 'Lato', 'Lucida Grande';
     background: #002b36;
     color: #fff;
+    transition: 250ms all;
 }
 a
 {
@@ -27,6 +28,7 @@ a:hover
     position: relative;
     width: 50%;
     margin: 0 auto;
+    transition: 500ms all;
 }
 .diva
 {
