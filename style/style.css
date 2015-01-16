@@ -27,7 +27,7 @@ a:hover
     overflow: none;
     opacity: 0.9;
 }
-#menu > div, a, button
+#menu > div, a
 {
     transition: 600ms all;
     flex: 1;
