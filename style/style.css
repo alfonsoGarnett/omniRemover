@@ -7,6 +7,7 @@ body, html
     height: 100%;
     font-family: 'Lato', 'Lucida Grande';
     background: #002b36;
+    color: #fff;
 }
 a
 {
@@ -19,7 +20,7 @@ a:hover
     color: #fff;
     text-shadow: 0 0 2px #fff;
 }
-body > div, a
+.diva
 {
     transition: 600ms all;
     background: #002b36;
