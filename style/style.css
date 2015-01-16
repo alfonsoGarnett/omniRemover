@@ -20,6 +20,12 @@ a:hover
     color: #fff;
     text-shadow: 0 0 2px #fff;
 }
+#container
+{
+    position: absolute;
+    width: 50%;
+    margin: 0 auto;
+}
 .diva
 {
     width: 200px;
