@@ -26,10 +26,10 @@ a:hover
     background: #002b36;
     border-radius: 50%;
     text-align:center;
-    font-size: 4.5vmax;
+    font-size: 4vmax;
     box-shadow: 0 0 1px #e2edf1;
 }
-body > div:hover, a:hover
+.diva:hover
 {
     background: #016468;
 }
