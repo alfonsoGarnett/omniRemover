@@ -28,7 +28,7 @@ a:hover
     background: #002b36;
     border-radius: 50%;
     text-align:center;
-    font-size: 2.5vmax;
+    font-size: 110%;
     box-shadow: 0 0 1px #e2edf1;
 }
 .diva:hover
