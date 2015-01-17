@@ -30,7 +30,7 @@
 
             style.innerHTML = '#floatingWindow { z-index: 9445656445656; line-height: 1.9vh; position: fixed; overflow: hidden; top: 10%; width: 29vh; height: 31vh;' +
                 'background: rgba(0, 0, 0, 0.8); color: #D9D9D9; padding: 1%; border-radius: 10px; border: 1px solid transparent; box-shadow: 0 0 5px rgba(46, 141, 216, 0.5);' +
-                'transition: width 500ms, height 500ms, background-color 250ms ease-in-out, box-shadow 500ms; font-family: "Lato", "Droid", "sans-serif"; }' +
+                'transition: width 500ms, height 500ms, background-color 250ms ease-in-out, box-shadow 500ms; font-family: "Lato", "Droid", "sans-serif"; box-sizing: content-box }' +
                 '#floatingWindow:hover { background: rgba(0, 0, 0, 0.88); box-shadow: 0 0 5px rgba(0, 148, 181, 0.8); color: #FAFAFA }' + 
                 '#floatingWindow p { margin: 0; padding-bottom: 2.5%; }' + 
                 '#floatingWindow span { margin: 0; padding-bottom: 1%; }';
