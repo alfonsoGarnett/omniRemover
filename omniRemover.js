@@ -285,7 +285,7 @@
         if (clickRemovesFlag == true)
         {
             var clickedThis = e.target;
-            console.log(e.target);
+            console.log("Removed: ", e.target);
             clickedThis.parentNode.removeChild(clickedThis);
         }
     };
@@ -363,7 +363,6 @@
                         console.log("Done removing gLoader survey!");
                     }
                 }
-                windowVars = [];
                 break;
 
             default:
@@ -372,6 +371,7 @@
 
         }
 
+        windowVars = [];
     }
     surveyTypes();
 
