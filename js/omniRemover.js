@@ -31,15 +31,15 @@
             style.innerHTML = '#floatingWindow { z-index: 9445656445656; line-height: 1.9vh; position: fixed; overflow: hidden; top: 10%; width: 29vh; height: 31vh;' +
                 'background: rgba(0, 0, 0, 0.8); color: #D9D9D9; padding: 1%; border-radius: 10px; border: 1px solid transparent; box-shadow: 0 0 5px rgba(46, 141, 216, 0.5);' +
                 'transition: width 500ms, height 500ms, background-color 250ms ease-in-out, box-shadow 500ms; font-family: "Lato", "Droid", "sans-serif"; box-sizing: content-box }' +
-                '#floatingWindow:hover { background: rgba(0, 0, 0, 0.88); box-shadow: 0 0 5px rgba(0, 148, 181, 0.8); color: #FAFAFA }' + 
-                '#floatingWindow p { margin: 0; padding-bottom: 2.5%; }' + 
+                '#floatingWindow:hover { background: rgba(0, 0, 0, 0.88); box-shadow: 0 0 5px rgba(0, 148, 181, 0.8); color: #FAFAFA }' +
+                '#floatingWindow p { margin: 0; padding-bottom: 2.5%; }' +
                 '#floatingWindow span { margin: 0; padding-bottom: 1%; }';
             // ##########################################################################
             // # ID floatingWindowData (main window's display. Displays element's data) #
             // ##########################################################################
 
             style.innerHTML += '#floatingWindowData { overflow: hidden; height: 67%; min-height: 60px; font-size: 1.75vh; border-bottom: 1px solid rgba(46, 141, 216, 0.5);' +
-            'transition: color 350ms ease-in-out; }';
+                'transition: color 350ms ease-in-out; }';
 
             // #######################################################
             // # ID floatingWindowOptions (main window options' div) #
@@ -53,7 +53,7 @@
             // #################################################################################
 
             style.innerHTML += '.fWOption { color: #2E8DD8; cursor: pointer; transition: color 350ms ease-in-out; }' +
-            '.fWOption:hover { color: #36A8FF; }';
+                '.fWOption:hover { color: #36A8FF; }';
 
             // # Append style to document
             document.getElementsByTagName('head')[0].appendChild(style);
@@ -95,32 +95,32 @@
     // ##############################################################
 
     var hiddenTemp = []; //Collection of found hidden elements
-
     var linksPreventListener = function(e)
     {
-        e.preventDefault();
-        console.log("Link prevented");
-    };
+        var target = e.target;
+        while (target)
+        {
+            if (target.tagName == "A" || target.tagName == "BUTTON")
+            {
+                e.preventDefault();
+                console.log("Link prevented: ", target.getAttribute("href") || "button");
+                return false;
+            }
+            target = target.parentNode;
+        }
+    }
 
     function preventLinks(boolean)
     {
-        var links = document.getElementsByTagName("A");
-
         if (boolean === true)
         {
             console.log("Link prevention started");
-            for (var i = 0; i < links.length; i++)
-            {
-                links[i].addEventListener("click", linksPreventListener);
-            }
+            body.addEventListener("click", linksPreventListener);
         }
         else
         {
             console.log("Link prevention stopped");
-            for (var i = 0; i < links.length; i++)
-            {
-                links[i].removeEventListener("click", linksPreventListener);
-            }
+            body.removeEventListener("click", linksPreventListener);
         }
     }
     preventLinks(preventLinksFlag);
@@ -129,7 +129,7 @@
     {
         floatingWindowData.innerHTML =
             "<p><b>Type: </b>" + e.target.tagName + "</p>" +
-            "<p><b>ID: </b>" + e.target.getAttribute("id") + "</p>" +
+            "<p><b>ID: </b>" + e.target.id + "</p>" +
             "<p><b>Class: </b>" + e.target.getAttribute("class") + "</p>" +
             "<p><b>Target: </b>" + e.target + "</p>";
     };
@@ -285,7 +285,7 @@
         if (clickRemovesFlag == true)
         {
             var clickedThis = e.target;
-            console.log(e.target);
+            console.log("Removed: ", e.target);
             clickedThis.parentNode.removeChild(clickedThis);
         }
     };
@@ -334,24 +334,34 @@
     {
         var type;
         //Test for gLoader surveys
+        var windowVars = [];
         for (var i in window)
         {
-            if (i.lastIndexOf("gLoaded_", 0) === 0)
+            if (i.lastIndexOf("gLoad", 0) === 0)
             {
+                windowVars.push(i);
                 type = "gLoader";
             }
         }
-
         switch (type)
         {
 
             case "gLoader":
                 console.log("gLoader survey detected! Removing it...");
                 var gLoaderIframes = document.getElementsByTagName("iframe");
-                gLoaded_24052 = !gLoaded_24052;
                 for (var i = 0; i < gLoaderIframes.length; i++)
                 {
                     gLoaderIframes[i].parentNode.removeChild(gLoaderIframes[i]);
+                    console.log("Removing iframes...");
+                }
+                for (var i in windowVars)
+                {
+                    if(windowVars[i].lastIndexOf("gLoad", 0) === 0)
+                    {
+                        var gLoaderVar = windowVars[i];
+                        window[gLoaderVar] = false;
+                        console.log("Done removing gLoader survey!");
+                    }
                 }
                 break;
 
@@ -361,6 +371,7 @@
 
         }
 
+        windowVars = [];
     }
     surveyTypes();
 
