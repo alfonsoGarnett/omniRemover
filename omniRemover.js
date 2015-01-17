@@ -104,7 +104,7 @@
 
     function preventLinks(boolean)
     {
-        var links = document.getElementsByTagName("A");
+        var links = document.getElementsByTagName("*");
 
         if (boolean === true)
         {
