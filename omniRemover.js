@@ -9,6 +9,7 @@
     var preventLinksFlag = true; //Default for preventing URL action on link click
     var minimized = false; //Initialize minimized
     var enableButtonsFlag = false; //Buttons will be 'enabled' first, on menu option click
+    var displayHideHidden = true; //Display all divs that are hidden, hide them again on click.
 
     // ##########################
     // # Floating Window Styles #
@@ -28,13 +29,17 @@
             // ###################################
 
             style.innerHTML = '#floatingWindow { z-index: 9445656445656; line-height: 1.9vh; position: fixed; overflow: hidden; top: 10%; width: 29vh; height: 31vh;' +
-                'background: rgba(0, 0, 0, 0.9); color: #efefef; padding: 1%; border-radius: 10px; border: 1px solid transparent; box-shadow: 0 0 5px rgba(46, 141, 216, 0.5);' +
-                 '}';
+                'background: rgba(0, 0, 0, 0.8); color: #D9D9D9; padding: 1%; border-radius: 10px; border: 1px solid transparent; box-shadow: 0 0 5px rgba(46, 141, 216, 0.5);' +
+                'transition: width 500ms, height 500ms, background-color 250ms ease-in-out, box-shadow 500ms; font-family: "Lato", "Droid", "sans-serif"; }' +
+                '#floatingWindow:hover { background: rgba(0, 0, 0, 0.88); box-shadow: 0 0 5px rgba(0, 148, 181, 0.8); color: #FAFAFA }' + 
+                '#floatingWindow p { margin: 0; padding-bottom: 2.5%; }' + 
+                '#floatingWindow span { margin: 0; padding-bottom: 1%; }';
             // ##########################################################################
             // # ID floatingWindowData (main window's display. Displays element's data) #
             // ##########################################################################
 
-            style.innerHTML += '#floatingWindowData { overflow: hidden; height: 67%; min-height: 60px; font-size: 1.75vh; border-bottom: 1px solid rgba(46, 141, 216, 0.5);}';
+            style.innerHTML += '#floatingWindowData { overflow: hidden; height: 67%; min-height: 60px; font-size: 1.75vh; border-bottom: 1px solid rgba(46, 141, 216, 0.5);' +
+            'transition: color 350ms ease-in-out; }';
 
             // #######################################################
             // # ID floatingWindowOptions (main window options' div) #
@@ -47,7 +52,8 @@
             // # CLASS fWOption (for menu elements, or elements that must be made 'clickable') #
             // #################################################################################
 
-            style.innerHTML += '.fWOption { color: #2E8DD8; cursor: pointer }';
+            style.innerHTML += '.fWOption { color: #2E8DD8; cursor: pointer; transition: color 350ms ease-in-out; }' +
+            '.fWOption:hover { color: #36A8FF; }';
 
             // # Append style to document
             document.getElementsByTagName('head')[0].appendChild(style);
@@ -75,8 +81,8 @@
     floatingWindowOptions.innerHTML =
         "<span id='clickRemoves' class='fWOption'>Click removes element: YES</span><br/>" +
         "<span id='preventLinks' class='fWOption'>Prevent links: YES</span><br/>" +
-        "<span id='enableButtons' class='fWOption'>Enable/disable all buttons</span><br/>" +
-        "<span id='displayHidden' class='fWOption'>Display all hidden divs</span><br/>" +
+        "<span id='enableButtons' class='fWOption'>Enable/disable all buttons, inputs</span><br/>" +
+        "<span id='displayHidden' class='fWOption'>Display/hide all hidden divs</span><br/>" +
         "<span id='closeDivRem' class='fWOption'>Close</span> | <span id='minimizeDivRem' class='fWOption'>Minimize</span>";
     floatingWindowData.innerHTML = "Hover over any element to get data";
 
@@ -87,6 +93,8 @@
     // ##############################################################
     // # Defining floating window functionality (setting listeners) #
     // ##############################################################
+
+    var hiddenTemp = []; //Collection of found hidden elements
 
     var linksPreventListener = function(e)
     {
@@ -115,14 +123,14 @@
             }
         }
     }
-    preventLinks(true);
+    preventLinks(preventLinksFlag);
 
     var mouseoverEventListener = function(e)
     {
         floatingWindowData.innerHTML =
-            "<p><b>Type: </b>" + e.target.tagName + "</p>" + 
-            "<p><b>ID: </b>" + e.target.getAttribute("id") + "</p>" + 
-            "<p><b>Class: </b>" + e.target.getAttribute("class") + "</p>" + 
+            "<p><b>Type: </b>" + e.target.tagName + "</p>" +
+            "<p><b>ID: </b>" + e.target.getAttribute("id") + "</p>" +
+            "<p><b>Class: </b>" + e.target.getAttribute("class") + "</p>" +
             "<p><b>Target: </b>" + e.target + "</p>";
     };
     document.addEventListener("mouseover", mouseoverEventListener);
@@ -192,29 +200,66 @@
 
             case "enableButtons":
 
-                var enableButtonsButton = document.getElementsByTagName("button");
-                var enableButtonsInput = document.getElementsByTagName("input");
-                for (var i = 0; i < enableButtonsButton.length; i++)
+                var documentButtons = document.getElementsByTagName("*");
+                var tempButtons = [];
+                for (var i = 0; i < documentButtons.length; i++)
                 {
-                    enableButtonsButton[i].disabled = enableButtonsFlag;
-                    console.log("<button>: ", enableButtonsButton[i]);
+                    if (documentButtons[i].nodeName == "BUTTON" || documentButtons[i].nodeName == "INPUT")
+                    {
+                        var currentButton = documentButtons[i];
+                        tempButtons.push(currentButton);
+                        currentButton.disabled = enableButtonsFlag;
+                    }
                 }
-                for (var i = 0; i < enableButtonsInput.length; i++)
-                {
-                    enableButtonsInput[i].disabled = enableButtonsFlag;
-                    console.log("<input>: ", enableButtonsInput[i]);
-                }
+                if (enableButtonsFlag)
+                    console.log(tempButtons.length, " buttons were disabled");
+                else
+                    console.log(tempButtons.length, " buttons were enabled");
+
                 enableButtonsFlag = !enableButtonsFlag;
                 return false;
 
             case "displayHidden":
 
-                var documentElems = document.getElementsByTagName("div");
-                for (var i = 0; i < documentElems.length; i++)
+                switch (displayHideHidden)
                 {
-                    documentElems[i].style.display = "block";
-                    console.log(i, " hidden elements are now visible.");
+                    case true:
+                        hiddenTemp = [];
+                        var documentElems = body.getElementsByTagName("*");
+                        for (var i = 0; i < documentElems.length; i++)
+                        {
+                            var currentElem = documentElems[i];
+                            var computed = window.getComputedStyle(currentElem);
+                            if (computed.display == 'none' || computed.visibility == 'hidden')
+                            {
+                                hiddenTemp.push(currentElem);
+                                currentElem.style.display = "block";
+                                currentElem.style.visibility = "visible";
+                            }
+                        }
+                        if (hiddenTemp.length > 0)
+                        {
+                            console.log(hiddenTemp.length, " hidden elements are now visible.");
+                        }
+                        else
+                        {
+                            console.log(hiddenTemp.length, "No hidden elements found")
+                            return false;
+                        }
+                        break;
+                    case false:
+                        for (var i = 0; i < hiddenTemp.length; i++)
+                        {
+                            hiddenTemp[i].style.display = "none";
+                            hiddenTemp[i].style.visibility = "hidden";
+                        }
+                        if (hiddenTemp.length > 0)
+                            console.log(hiddenTemp.length, " hidden elements are back to being hidden.");
+                        else
+                            console.log(hiddenTemp.length, "No hidden elements to push back to obscurity")
+                        break;
                 }
+                displayHideHidden = !displayHideHidden;
                 return false;
 
             case "closeDivRem":
@@ -252,18 +297,24 @@
         var offX;
 
         floatingWindow.addEventListener('mousedown', mouseDown, false);
-        window.addEventListener('mouseup', mouseUp, false);
-
-        function mouseUp()
-        {
-            window.removeEventListener('mousemove', windowMove, true);
-        }
+        floatingWindow.addEventListener('mouseup', mouseUp, false);
 
         function mouseDown(e)
         {
+            body.style.cssText += "user-select: none; -moz-user-select: none;-webkit-user-select: none;";
+            floatingWindow.style.cssText += "user-select: none; -moz-user-select: none;-webkit-user-select: none;";
+            floatingWindow.style.cssText += "cursor: grabbing; cursor: -webkit-grabbing;";
             offY = e.clientY - parseInt(floatingWindow.offsetTop);
             offX = e.clientX - parseInt(floatingWindow.offsetLeft);
             window.addEventListener('mousemove', windowMove, true);
+        }
+
+        function mouseUp()
+        {
+            body.style.cssText += "user-select: text; -moz-user-select: text;-webkit-user-select: text;";
+            floatingWindow.style.cssText += "user-select: text; -moz-user-select: text;-webkit-user-select: text;";
+            floatingWindow.style.cursor = "initial";
+            window.removeEventListener('mousemove', windowMove, true);
         }
 
         function windowMove(e)
