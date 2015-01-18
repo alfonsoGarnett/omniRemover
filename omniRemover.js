@@ -211,7 +211,7 @@
 
         var mouseoutEventListener = function(e)
         {
-            var target = target;
+            var target = e.target;
             if (floatingWindow.contains(target) || !highlightElem) return false;
 
             target.style.opacity = oldOp;
