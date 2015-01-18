@@ -451,10 +451,10 @@
         var offX;
 
         floatingWindow.addEventListener('mousedown', mouseDown, false);
-        floatingWindow.addEventListener('touchdown', mouseDown, false);
+        floatingWindow.addEventListener('touchstart', mouseDown, false);
 
         floatingWindow.addEventListener('mouseup', mouseUp, false);
-        floatingWindow.addEventListener('touchup', mouseUp, false);
+        floatingWindow.addEventListener('touchend', mouseUp, false);
 
 
         function mouseDown(e)
