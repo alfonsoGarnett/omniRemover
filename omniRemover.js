@@ -7,7 +7,7 @@
     var body = document.getElementsByTagName("body")[0];
     var clickRemovesFlag = true; //Default for click element removal
     var preventLinksFlag = true; //Default for preventing URL action on link click
-    var highlightElem = true; //Hover highlights elements
+    var highlightElem = false; //Hover highlights elements
     var maximized = true; //Initialize minimized
 
     // ##########################
@@ -146,7 +146,7 @@
 
         this.toggle = function()
         {
-            if(preventLinksFlag)
+            if (preventLinksFlag)
             {
                 preventLinksOpt.innerHTML = "Prevent links: YES";
                 console.log("Link prevention started");
@@ -163,11 +163,11 @@
 
         this.unsetListeners = function()
         {
-            document.removeEventListener("click", preventLink);
+            body.removeEventListener("click", preventLink);
         }
 
         //Init
-        this.toggle(); 
+        this.toggle();
     }
     var preventLinks = new preventLinksP();
 
@@ -178,7 +178,7 @@
 
         this.highlightToggle = function()
         {
-            if (!highlightElem)
+            if (highlightElem)
             {
                 highlightElemOpt.innerHTML = "Highlight: ON";
                 console.log("Highlight elems on");
@@ -195,13 +195,13 @@
             var target = e.target;
             if (hoverData)
             {
-            floatingWindowData.innerHTML =
-                "<p><b>Type: </b>" + target.tagName + "</p>" +
-                "<p><b>ID: </b>" + target.id + "</p>" +
-                "<p><b>Class: </b>" + target.getAttribute("class") + "</p>" +
-                "<p><b>Target: </b>" + target + "</p>";
+                floatingWindowData.innerHTML =
+                    "<p><b>Type: </b>" + target.tagName + "</p>" +
+                    "<p><b>ID: </b>" + target.id + "</p>" +
+                    "<p><b>Class: </b>" + target.getAttribute("class") + "</p>" +
+                    "<p><b>Target: </b>" + target + "</p>";
             }
-            if (floatingWindow.contains(target) || !highlightElem) return false;
+            if (floatingWindow.contains(target) || highlightElem) return false;
 
             oldOp = target.style.opacity;
             oldBorder = target.style.border;
@@ -212,7 +212,7 @@
         var mouseoutEventListener = function(e)
         {
             var target = e.target;
-            if (floatingWindow.contains(target) || !highlightElem) return false;
+            if (floatingWindow.contains(target) || highlightElem) return false;
 
             target.style.opacity = oldOp;
             target.style.border = oldBorder;
@@ -220,17 +220,17 @@
 
         this.startListeners = function()
         {
-                document.addEventListener("mouseover", mouseoverEventListener);
-                document.addEventListener("mouseout", mouseoutEventListener);
-                console.log("Hover listeners on");
+            document.addEventListener("mouseover", mouseoverEventListener);
+            document.addEventListener("mouseout", mouseoutEventListener);
+            console.log("Hover listeners on");
         }
         this.unsetListeners = function()
-        {
+            {
                 document.removeEventListener("mouseover", mouseoverEventListener);
                 document.removeEventListener("moseout", mouseoutEventListener);
                 console.log("Hover listeners off");
-        }
-        //Init
+            }
+            //Init
         this.startListeners();
         this.highlightToggle();
     }
@@ -241,7 +241,7 @@
         var elementRemover = function(e)
         {
             var clickedThis = e.target;
-            if(floatingWindow.contains(clickedThis)) return false;
+            if (floatingWindow.contains(clickedThis)) return false;
             console.log("Removed: ", e.target);
             clickedThis.parentNode.removeChild(clickedThis);
         }
@@ -380,7 +380,7 @@
         {
             styleSheet("destroy");
             floatingWindow.removeEventListener("click", floatingWindowListener);
-            preventLinks.unsetListeners(); 
+            preventLinks.unsetListeners();
             hoverFunctions.unsetListeners();
             clickRemoves.unsetListeners();
             delete preventLinks;
