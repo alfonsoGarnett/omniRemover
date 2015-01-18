@@ -451,7 +451,11 @@
         var offX;
 
         floatingWindow.addEventListener('mousedown', mouseDown, false);
+        floatingWindow.addEventListener('touchdown', mouseDown, false);
+
         floatingWindow.addEventListener('mouseup', mouseUp, false);
+        floatingWindow.addEventListener('touchup', mouseUp, false);
+
 
         function mouseDown(e)
         {
@@ -461,6 +465,8 @@
             offY = e.clientY - parseInt(floatingWindow.offsetTop);
             offX = e.clientX - parseInt(floatingWindow.offsetLeft);
             window.addEventListener('mousemove', windowMove, true);
+            window.addEventListener('touchmove', windowMove, true);
+
         }
 
         function mouseUp()
@@ -469,6 +475,8 @@
             floatingWindow.style.cssText += "user-select: text; -moz-user-select: text;-webkit-user-select: text;";
             floatingWindow.style.cursor = "initial";
             window.removeEventListener('mousemove', windowMove, true);
+            window.removeEventListener('touchmove', windowMove, true);
+
         }
 
         function windowMove(e)
