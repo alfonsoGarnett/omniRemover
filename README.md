@@ -8,7 +8,7 @@ Note that displaying all hidden divs can have undesired effects on the current v
 
 **You can check out a demo of the script over at:**
 
-**[Demo](http://example.com/ "omniRemover Demo")**
+**[Demo](http://alfonsogarnett.github.com/omniRemover/ "omniRemover Demo")**
 
 # Features
 * Draggable window that displays hovered DOM element information
