@@ -1,4 +1,4 @@
-
+(function (){
     // #########################
     // # General use variables #
     // #########################
@@ -69,20 +69,19 @@
         }
 
     }
-    styleSheet(true);
 
     // ##############################################################
     // # Create the floating window, menu elements. Append to body. #
     // ##############################################################
-    var elems = ['Window', 'TitleBar', 'TitleBarContain', 'Data', 'Options', 'closeWindow', 'maximized'],
+    this.elems = ['Window', 'TitleBar', 'TitleBarContain', 'Data', 'Options', 'closeWindow', 'maxMin'],
         options = ['clickRemoves', 'preventLinks', 'buttonsToggle', 'displayToggle', 'highlightElem'],
         allElems = elems.concat(options),
         FloatingWindow = function (id) {
+            // Methods for window creation
             for (i = 0; i < allElems.length; i++) {
                 FloatingWindow.prototype[allElems[i]] = document.createElement("div");
                 FloatingWindow.prototype[allElems[i]].setAttribute("class", "floatingWindow" + allElems[i]);
             }
-
             function appendor(parent, children) {
                 if (toString.call(children) === "[object String]") {
                     children = children.split(", ");
@@ -91,8 +90,13 @@
                     FloatingWindow.prototype[parent].appendChild(FloatingWindow.prototype[children[i]]);
                 }
             }
-
-            function makeItDraggable(Window) {
+            // Methods for window functionality
+            var maximized = true;
+            function isFunction(variable) {
+                var getType = {};
+                return variable && getType.toString.call(variable) === '[object Function]';
+            }
+            function makeItDraggable(Window, boolean) {
                 var offY,
                     offX;
 
@@ -118,20 +122,59 @@
                     window.removeEventListener('mousemove', windowMove, true);
                 }
 
-                Window.addEventListener('mousedown', mouseDown, false);
-                Window.addEventListener('mouseup', mouseUp, false);
+                if(boolean)
+                {
+                    Window.addEventListener('mousedown', mouseDown, false);
+                    Window.addEventListener('mouseup', mouseUp, false);
+                }
+                else
+                {
+                    Window.removeEventListener('mousedown', mouseDown, false);
+                    Window.removeEventListener('mouseup', mouseUp, false);         
+                }
             }
+            this.maxMinToggle = function() {
+                    if (maximized) {
+                        this.Data.innerHTML = "";
+                        this.Window.style.height = "38%";
+                        this.Options.style.display = "block";
+                        console.log("Window maximized");
+                        this.maxMin.innerHTML = "Min";
+                        hoverData = true;
+                    } else {
+                        this.Data.innerHTML = "";
+                        this.Window.style.height = "1%";
+                        this.Options.style.display = "none";
+                        console.log("Window minimized");
+                        this.maxMin.innerHTML = "Max";
+                        hoverData = false;
+                    }
+                    maximized = !maximized;
+                };
+            this.close = function(extraParams) {
+                if(isFunction(extraParams))
+                {
+                    extraParams();
+                }
+                styleSheet("destroy");
+                makeItDraggable(this.Window, false);
+                this.Window.parentNode.removeChild(this.Window);
+            };
+
+            //init
+            styleSheet(true);
             appendor("TitleBar", "TitleBarContain");
-            appendor("TitleBarContain", "closeWindow, maximized");
+            appendor("TitleBarContain", "closeWindow, maxMin");
             appendor("Options", options);
             appendor("Window", "TitleBar, Data, Options");
             this.Window.setAttribute("id", id);
+            this.maxMinToggle();
+            this.closeWindow.innerHTML = "Close";
             document.body.appendChild(this.Window);
-            makeItDraggable(this.Window);
-        };
+            makeItDraggable(this.Window, true);
+        }
 
     var omniRemover = new FloatingWindow("omniRemoverWindow");
-
     // ##############################################################
     // # Defining floating window functionality (setting listeners) #
     // ##############################################################
@@ -332,28 +375,22 @@
     }
     var displayToggle = new displayToggleP();
 
-    function maximizedToggleP() {
-        this.toggle = function () {
-            if (maximized) {
-                omniRemover.Data.innerHTML = "";
-                omniRemover.Window.style.height = "38%";
-                omniRemover.Options.style.display = "block";
-                console.log("Window maximized");
-                omniRemover.maximized.innerHTML = "Min";
-                hoverData = true;
-            } else {
-                omniRemover.Data.innerHTML = "";
-                omniRemover.Window.style.height = "1%";
-                omniRemover.Options.style.display = "none";
-                console.log("Window minimized");
-                omniRemover.maximized.innerHTML = "Max";
-                hoverData = false;
-            }
-            maximized = !maximized;
-        };
-        this.toggle();
-    }
-    var maximizedToggle = new maximizedToggleP();
+    var closeCallback = function()
+    {
+            preventLinks.unsetListeners();
+            hoverFunctions.unsetListeners();
+            clickRemoves.unsetListeners();
+            preventLinks = undefined;
+            hoverFunctions = undefined;
+            clickRemoves = undefined;
+            maximized = undefined;
+            buttonsToggle = undefined;
+            displayToggle = undefined;
+            closeCallback = undefined;
+            console.log("Element removal by click disabled");
+            console.log("#############################################################");
+            console.log("Script stopped, everything back to normal. Please reload page");
+    };
 
     var floatingWindowListener = function (e) {
         switch (e.target) {
@@ -366,11 +403,6 @@
         case omniRemover.preventLinks:
 
             preventLinks.toggle();
-            return false;
-
-        case omniRemover.maximized:
-
-            maximizedToggle.toggle();
             return false;
 
         case omniRemover.buttonsToggle:
@@ -388,37 +420,18 @@
             hoverFunctions.highlightToggle();
             return false;
 
+        case omniRemover.maxMin:
+
+            omniRemover.maxMinToggle();
+            return false;
+
         case omniRemover.closeWindow:
 
-            closeWindow.constructor(true);
+            omniRemover.close(closeCallback);
             return false;
         }
     };
     omniRemover.Window.addEventListener("click", floatingWindowListener);
-
-    function closeP(boolean) {
-        if (boolean) {
-            styleSheet("destroy");
-            omniRemover.Window.removeEventListener("click", floatingWindowListener);
-            preventLinks.unsetListeners();
-            hoverFunctions.unsetListeners();
-            clickRemoves.unsetListeners();
-            preventLinks = undefined;
-            hoverFunctions = undefined;
-            clickRemoves = undefined;
-            maximized = undefined;
-            buttonsToggle = undefined;
-            displayToggle = undefined;
-            closeWindow = undefined;
-            omniRemover.Window.parentNode.removeChild(omniRemover.Window);
-            console.log("Element removal by click disabled");
-            console.log("#############################################################");
-            console.log("Script stopped, everything back to normal. Please reload page");
-        } else {
-            omniRemover.closeWindow.innerHTML = "Close";
-        }
-    }
-    closeWindow = new closeP(false);
 
     // ############################
     // # Survey detection methods #
@@ -463,4 +476,4 @@
     }
     surveyTypes();
 
-
+}());
