@@ -1,7 +1,7 @@
 # omniRemover
 A basic tool for manipulation of the DOM.
 
-To use, type "javascript: " in your browser, followed by the code contained within the **omniRemoval.js** file, or paste the code inside of a console (preferably), normally triggered by pressing CTRL + SHIFT + I. 
+To use, type "javascript: " in your browser, followed by the code contained within the **omniRemoval.js** file, or paste the code inside of a console, normally triggered by pressing CTRL + SHIFT + I. 
 
 Note that displaying all hidden divs can have undesired effects on the current visited site.
 
