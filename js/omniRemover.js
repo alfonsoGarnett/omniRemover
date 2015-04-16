@@ -407,41 +407,4 @@
         console.log("#############################################################");
         console.log("Script stopped, everything back to normal. Please reload page");
     });
-    // ############################
-    // # Survey detection methods #
-    // ############################
-    function surveyTypes() {
-        var type,
-            //Test for gLoader surveys
-            windowVars = [];
-        for (i in window) {
-            if (i.lastIndexOf("gLoad", 0) === 0) {
-                windowVars.push(i);
-                type = "gLoader";
-            }
-        }
-        switch (type) {
-        case "gLoader":
-            console.log("gLoader survey detected! Removing it...");
-            var gLoaderIframes = document.getElementsByTagName("iframe"),
-                gLoaderVar;
-            for (i = 0; i < gLoaderIframes.length; i++) {
-                gLoaderIframes[i].parentNode.removeChild(gLoaderIframes[i]);
-                console.log("Removing iframes...");
-            }
-            for (i in windowVars) {
-                if (windowVars[i].lastIndexOf("gLoad", 0) === 0) {
-                    gLoaderVar = windowVars[i];
-                    window[gLoaderVar] = false;
-                    console.log("Done removing gLoader survey!");
-                }
-            }
-            break;
-        default:
-            console.log("Survey type not found... Please remove blockage elements manually");
-            break;
-        }
-        windowVars = [];
-    }
-    surveyTypes();
 }());
