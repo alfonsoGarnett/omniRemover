@@ -88,7 +88,6 @@
                 return variable && getType.toString.call(variable) === '[object Function]';
             }
             this.clickFunctions = (function () {
-                console.log("first");
                 var firstAttach = true;
                 var customFunction;
                 return function (fn) {
