@@ -6,7 +6,7 @@
         i,
         clickRemovesFlag = true, //Default for click element removal
         preventLinksFlag = true, //Default for preventing URL action on link click
-        highlightElem = false //Hover highlights elements
+        highlightElem = false, //Hover highlights elements
     hoverData = true;
     // ##########################
     // # Floating Window Styles #
