@@ -3,11 +3,11 @@
     // # General use variables #
     // #########################
     var body = document.body,
-        i,
         clickRemovesFlag = true, //Default for click element removal
         preventLinksFlag = true, //Default for preventing URL action on link click
         highlightElem = false, //Hover highlights elements
-    hoverData = true;
+        hoverData = true,
+        i;
     // ##########################
     // # Floating Window Styles #
     // ##########################
